@@ -50,7 +50,42 @@ export async function POST(req) {
   const { id } = evt.data
   const eventType = evt.type
   console.log(`Received webhook with ID ${id} and event type of ${eventType}`)
-  console.log('Webhook payload:', body)
+  console.log('Webhook payload:', body);
+
+  // Process the user.created event
+  if (evt.type === 'user.created') {
+    console.log('Received user.created event:', evt);
+
+    const userData = evt.data;
+    const { id, email_addresses, first_name, last_name } = userData;
+
+    // Fallback for missing fields
+    const email = email_addresses?.[0]?.email_address || 'no-reply@example.com';
+    const username =
+      userData.username || `${first_name || ''} ${last_name || ''}`.trim() || email.split('@')[0];
+
+    // Prepare data for your API
+    const data = {
+      clerk_id: id,
+      email,
+      username,
+    };
+
+    console.log('Data to send to API:', data);
+
+    try {
+      const response = await fetch('http://localhost:8000/api/user/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      console.log('API Response:', result);
+    } catch (error) {
+      console.error('Error sending data to API:', error);
+    }
+  }
 
   return new Response('Webhook received', { status: 200 })
 }
