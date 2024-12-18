@@ -74,7 +74,7 @@ export async function POST(req) {
     console.log('Data to send to API:', data);
 
     try {
-      const response = await fetch('https://sqlite-example-vh7p.vercel.app/api/user/add', {
+      const response = await fetch('https://sqliteexample.onrender.com/api/user/add', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

@@ -8,7 +8,7 @@ export default async function page() {
 
     return (
         <>
-            <h1 className="text-4xl">All Articles Test</h1>
+            <h1 className="text-4xl">All Articles Test hello</h1>
             <PostList posts={data} />
         </>
     );
