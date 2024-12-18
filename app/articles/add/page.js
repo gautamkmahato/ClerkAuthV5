@@ -20,7 +20,7 @@ export default function Add() {
             image_url: "https://www.youtube.com"
         }
         console.log(data)
-        const response = await fetch('http://localhost:8000/api/post/add', {
+        const response = await fetch('https://sqlite-example-vh7p.vercel.app/api/post/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

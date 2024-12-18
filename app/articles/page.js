@@ -1,7 +1,7 @@
 import PostList from "../_components/PostList";
 
 export default async function page() {
-    const response = await fetch('http://localhost:8000/api/post', {
+    const response = await fetch('https://sqlite-example-vh7p.vercel.app/api/post', {
         cache: 'no-store', // Prevent caching for dynamic SSR
     });
     const data = await response.json();
