@@ -3,7 +3,7 @@
 import { useAuth } from "@clerk/nextjs";
 import { useState } from "react"
 
-export default function page() {
+export default function Add() {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 

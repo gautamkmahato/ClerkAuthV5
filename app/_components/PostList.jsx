@@ -301,8 +301,8 @@ export default function PostList({ posts }) {
 
                         <div className="lg:col-span-3">
                             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                                {posts.map((post) =>(
-                                    <div>
+                                {posts.map((post, index) =>(
+                                    <div key={index}>
                                         <PostCard id={post.id} title={post.title} content={post.content} created_at={post.created_at} />
                                     </div>
                                 ))}
