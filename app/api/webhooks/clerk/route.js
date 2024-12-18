@@ -53,7 +53,27 @@ export async function POST(req) {
   console.log('Webhook payload:', body);
 
   if (evt.type === 'user.created') {
-    console.log('userId:', evt.data.id)
+    console.log('userId:', evt.data.id);
+    const { id, username } = evt.data;
+    const email_address = evt.data.email_addresses[0].email_address;
+    const data = {
+      username: username,
+      email: email_address,
+      clerk_id: id
+    }
+
+    const response = await fetch('http://localhost:8000/api/user/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(data),
+    })
+    const result = await response.json();
+
+    console.log(result);
+
   }
 
   return new Response('Webhook received', { status: 200 })
