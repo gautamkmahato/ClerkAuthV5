@@ -32,53 +32,25 @@ export async function POST(req) {
   let evt;
 
   // Verify payload with headers
-    try {
-        evt = wh.verify(body, {
-        'svix-id': svix_id,
-        'svix-timestamp': svix_timestamp,
-        'svix-signature': svix_signature,
-        })
-    } catch (err) {
-            console.error('Error: Could not verify webhook:', err)
-            return new Response('Error: Verification error', {
-            status: 400,
-        })
-    }
+  try {
+    evt = wh.verify(body, {
+      'svix-id': svix_id,
+      'svix-timestamp': svix_timestamp,
+      'svix-signature': svix_signature,
+    })
+  } catch (err) {
+    console.error('Error: Could not verify webhook:', err)
+    return new Response('Error: Verification error', {
+      status: 400,
+    })
+  }
 
   // Do something with payload
   // For this guide, log payload to console
   const { id } = evt.data
   const eventType = evt.type
   console.log(`Received webhook with ID ${id} and event type of ${eventType}`)
-  console.log('Webhook payload:', body);
-
-  if (evt.type === 'user.created') {
-    console.log('userId:', evt.data.id);
-    const { id, email_addresses, first_name, last_name } = evt.data;
-    const email_address = email_addresses[0]?.email_address; // Use optional chaining to avoid errors
-
-    // Fallback for username
-    const username = evt.data.username || `${first_name} ${last_name}` || email_address || 'default_username';
-
-    const data = {
-      username: username,
-      email: email_address,
-      clerk_id: id
-    }
-
-    const response = await fetch('http://localhost:8000/api/user/add', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    })
-    const result = await response.json();
-
-    console.log(result);
-
-  }
+  console.log('Webhook payload:', body)
 
   return new Response('Webhook received', { status: 200 })
 }
