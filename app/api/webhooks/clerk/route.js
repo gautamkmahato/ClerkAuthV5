@@ -54,8 +54,12 @@ export async function POST(req) {
 
   if (evt.type === 'user.created') {
     console.log('userId:', evt.data.id);
-    const { id, username } = evt.data;
-    const email_address = evt.data.email_addresses[0].email_address;
+    const { id, email_addresses, first_name, last_name } = evt.data;
+    const email_address = email_addresses[0]?.email_address; // Use optional chaining to avoid errors
+
+    // Fallback for username
+    const username = evt.data.username || `${first_name} ${last_name}` || email_address || 'default_username';
+
     const data = {
       username: username,
       email: email_address,
